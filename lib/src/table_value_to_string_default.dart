@@ -1,3 +1,5 @@
+import 'package:simple_dart_utils_date_time/simple_dart_utils_date_time.dart' as utils_date_time;
+
 import 'table_column_descr.dart';
 import 'table_image.dart';
 import 'table_link.dart';
@@ -14,6 +16,8 @@ String tableValueToStringDefault(TableColumnDescr columnDescr, dynamic value) {
     formattedValue = '';
   } else if (value is num) {
     formattedValue = value.toStringAsFixed(columnDescr.precision).replaceAll('.', ',');
+  } else if (value is DateTime) {
+    formattedValue = utils_date_time.formatDateTime(value);
   } else {
     formattedValue = value.toString();
   }
