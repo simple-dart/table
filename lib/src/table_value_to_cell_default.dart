@@ -9,15 +9,15 @@ import 'table_link.dart';
 AbstractTableCell tableValueToCellDefault(TableColumnDescr columnDescr, dynamic value) {
   AbstractTableCell cell;
   if (value is TableLink) {
-    cell = LinkTableCell(value);
+    cell = LinkTableCell()..value = value;
   } else if (value is TableImage) {
     cell = ImageTableCell(value);
   } else if (value is Component) {
     cell = ComponentTableCell(value);
   } else if (value is List<String>) {
-    cell = MultilineTableCell(value);
+    cell = MultilineTableCell()..value = value;
   } else if (value is List) {
-    cell = MultiComponentTableCell(value);
+    cell = MultiComponentTableCell()..value = value;
   } else {
     var valueStr = '';
     if (value == null) {
@@ -29,7 +29,7 @@ AbstractTableCell tableValueToCellDefault(TableColumnDescr columnDescr, dynamic 
     } else {
       valueStr = value.toString();
     }
-    cell = LabelTableCell(valueStr);
+    cell = LabelTableCell()..value = valueStr;
   }
   return cell;
 }

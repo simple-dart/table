@@ -36,7 +36,7 @@ class Table extends PanelComponent {
     valueToCell = tableValueToCellDefault;
     valueToString = tableValueToStringDefault;
     vertical = true;
-    element.style.flexShrink = '1';
+    shrinkable = true;
     addAll([headersRow, scrollablePanel]);
     element.onCopy.listen(copyToClipboardListener);
   }
@@ -104,7 +104,7 @@ class Table extends PanelComponent {
   void _addRow(TableRow simpleTableRow) {
     if (simpleTableRow.cells.length < columns.length) {
       for (var colNum = simpleTableRow.cells.length; colNum < columns.length; colNum++) {
-        final emptyCell = LabelTableCell('');
+        final emptyCell = LabelTableCell();
         simpleTableRow.cells.add(emptyCell);
         simpleTableRow.add(emptyCell);
       }
@@ -144,7 +144,7 @@ class Table extends PanelComponent {
 
   void copyToClipboardListener(ClipboardEvent event) {
     if (_copyFull) {
-      final cbData = StringBuffer()..writeln(headersRow.cells.map((cell) => cell.text).toList().join('\t'));
+      final cbData = StringBuffer()..writeln(columns.map((column) => column.caption).toList().join('\t'));
       for (final row in rows) {
         for (var i = 0; i < columns.length; i++) {
           final value = row.data[i];

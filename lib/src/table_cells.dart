@@ -7,94 +7,133 @@ import 'table_column_descr.dart';
 import 'table_image.dart';
 import 'table_link.dart';
 
-abstract class AbstractTableCell implements Component {
-  String get text;
+abstract class AbstractTableCell<T> implements Component {
+  T get value;
+
+  set value(T value);
 }
 
-class LabelTableCell extends Label implements AbstractTableCell {
-  LabelTableCell(String content) {
+class LabelTableCell extends Label implements AbstractTableCell<String> {
+  LabelTableCell() {
     addCssClass('TableCell');
-    caption = content;
     shrinkable = true;
     breakWords = true;
     shrinkable = true;
   }
 
   @override
-  String get text => caption;
+  set value(String value) {
+    caption = value;
+  }
+
+  @override
+  String get value => caption;
 }
 
-class LinkTableCell extends Link implements AbstractTableCell {
-  LinkTableCell(TableLink content) {
+class LinkTableCell extends Link implements AbstractTableCell<TableLink> {
+  LinkTableCell() {
     addCssClass('TableCell');
-    caption = content.caption;
-    href = content.url;
     shrinkable = true;
     breakWords = true;
     shrinkable = true;
   }
 
   @override
-  String get text => caption;
+  set value(TableLink value) {
+    caption = value.caption;
+    href = value.url;
+  }
+
+  @override
+  TableLink get value => TableLink(caption, href);
 }
 
-class MultilineTableCell extends PanelComponent implements AbstractTableCell {
-  MultilineTableCell(List<dynamic> content) : super('MultilineTableCell') {
+class MultilineTableCell extends PanelComponent implements AbstractTableCell<List<dynamic>> {
+  MultilineTableCell() : super('MultilineTableCell') {
     addCssClass('TableCell');
     vertical = true;
     shrinkable = true;
-    addAll(content.map((e) => Label()..caption = e.toString()).toList());
   }
 
   @override
-  String get text => children.map((e) => (e as Label).caption).join('/n');
+  set value(List<dynamic> value) {
+    clear();
+    addAll(value.map((e) => Label()..caption = e.toString()).toList());
+  }
+
+  @override
+  List<dynamic> get value => children.map((e) => (e as Label).caption).toList();
 }
 
-class MultiComponentTableCell extends PanelComponent implements AbstractTableCell {
-  MultiComponentTableCell(List<dynamic> content) : super('MultiComponentTableCell') {
+class MultiComponentTableCell extends PanelComponent implements AbstractTableCell<List<dynamic>> {
+  List<dynamic> _value = [];
+
+  MultiComponentTableCell() : super('MultiComponentTableCell') {
     addCssClass('TableCell');
     vertical = true;
     shrinkable = true;
-    addAll(content.map((e) => e as Component).toList());
   }
 
   @override
-  String get text => children.map((e) => (e as Label).caption).join('/n');
-}
-
-class ComponentTableCell extends PanelComponent implements AbstractTableCell {
-  ComponentTableCell(Component comp) : super('ComponentTableCell') {
-    add(comp);
+  set value(List<dynamic> value) {
+    clear();
+    _value = value;
+    addAll(value.map((e) => e as Component).toList());
   }
 
   @override
-  String get text => element.text ?? '';
+  List<dynamic> get value => _value;
 }
 
-class ImageTableCell extends Image implements AbstractTableCell {
+class ComponentTableCell extends PanelComponent implements AbstractTableCell<Component> {
+  @override
+  late Component value;
+
+  ComponentTableCell(this.value) : super('ComponentTableCell') {
+    add(value);
+  }
+}
+
+class ImageTableCell extends Image implements AbstractTableCell<TableImage> {
+  late TableImage _value;
+
   ImageTableCell(TableImage content) {
     addCssClass('TableCell');
-    source = content.url;
-    width = '${content.width}px';
-    height = '${content.height}px';
+    value = content;
   }
 
   @override
-  String get text => source;
+  set value(TableImage value) {
+    _value = value;
+    source = value.url;
+    width = '${value.width}px';
+    height = '${value.height}px';
+  }
+
+  @override
+  TableImage get value => _value;
 }
 
-class ColumnHeaderCell extends Label implements AbstractTableCell {
+class ColumnHeaderCell extends Label implements AbstractTableCell<TableColumnDescr> {
+  late TableColumnDescr _columnDescr;
+
   ColumnHeaderCell(TableColumnDescr column) {
     addCssClass('TableCell');
-    caption = column.caption;
-    width = '${column.width}px';
-    if (column.sortable) {
-      addCssClass('Sortable');
-    }
-    hAlign = column.hAlign;
     shrinkable = true;
+    value = column;
   }
 
   @override
-  String get text => caption;
+  set value(TableColumnDescr value) {
+    _columnDescr = value;
+    caption = value.caption;
+    width = '${value.width}px';
+    if (value.sortable) {
+      addCssClass('Sortable');
+    }
+    hAlign = value.hAlign;
+  }
+
+  @override
+  TableColumnDescr get value => _columnDescr;
 }

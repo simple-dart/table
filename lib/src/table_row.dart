@@ -4,7 +4,14 @@ import 'table_cells.dart';
 
 class TableRow extends PanelComponent {
   List<AbstractTableCell> cells = <AbstractTableCell>[];
-  late List<dynamic> data;
+
+  List<dynamic> get data => cells.map((e) => e.value).toList();
+
+  set data(List<dynamic> value) {
+    for (var i = 0; i < value.length; i++) {
+      cells[i].value = value[i];
+    }
+  }
 
   TableRow() : super('TableRow') {
     fullWidth();

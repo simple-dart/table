@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Add changing cell value without recreating row
+
 ## 0.0.3
 
 - Extract DateTime format to external utils
