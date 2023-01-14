@@ -82,7 +82,7 @@ class Table extends PanelComponent {
   }
 
   TableRow createRow(List<dynamic> cellValues) {
-    final row = TableRow()..data = cellValues;
+    final row = TableRow();
     var colLen = columns.length;
     if (colLen > cellValues.length) {
       colLen = cellValues.length;

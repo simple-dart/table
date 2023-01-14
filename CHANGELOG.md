@@ -1,3 +1,7 @@
+## 0.0.5
+
+- Fix bug in `table::Table::new`
+
 ## 0.0.4
 
 - Add changing cell value without recreating row
