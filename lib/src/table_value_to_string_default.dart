@@ -14,8 +14,8 @@ String tableValueToStringDefault(TableColumnDescr columnDescr, dynamic value) {
     formattedValue = value.join(';');
   } else if (value == null) {
     formattedValue = '';
-  } else if (value is num) {
-    formattedValue = value.toStringAsFixed(columnDescr.precision).replaceAll('.', ',');
+  } else if (value is num && columnDescr.precision != null) {
+    formattedValue = value.toStringAsFixed(columnDescr.precision!).replaceAll('.', ',');
   } else if (value is DateTime) {
     formattedValue = utils_date_time.formatDateTime(value);
   } else {

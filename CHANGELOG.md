@@ -1,3 +1,11 @@
+## 0.1.0
+
+- Upgrade structure for redefine row classes
+
+## 0.0.6
+
+- Add showTime in table column
+
 ## 0.0.5
 
 - Fix bug in `table::Table::new`

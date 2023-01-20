@@ -1,6 +1,6 @@
 name: simple_dart_table
 description: Table Component
-version: 0.0.5
+version: 0.1.0
 repository: https://github.com/simple-dart/table
 platforms:
   web:

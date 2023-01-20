@@ -5,5 +5,5 @@ class TableColumnDescr {
   int width = 0;
   bool sortable = false;
   Align hAlign = Align.start;
-  int precision = 0;
+  int? precision;
 }

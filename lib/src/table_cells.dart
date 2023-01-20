@@ -2,23 +2,15 @@ import 'package:simple_dart_image/simple_dart_image.dart';
 import 'package:simple_dart_label/simple_dart_label.dart';
 import 'package:simple_dart_link/simple_dart_link.dart';
 import 'package:simple_dart_ui_core/simple_dart_ui_core.dart';
+import 'package:simple_dart_utils_date_time/simple_dart_utils_date_time.dart' as utils_date_time;
 
-import 'table_column_descr.dart';
-import 'table_image.dart';
-import 'table_link.dart';
-
-abstract class AbstractTableCell<T> implements Component {
-  T get value;
-
-  set value(T value);
-}
+import '../simple_dart_table.dart';
 
 class LabelTableCell extends Label implements AbstractTableCell<String> {
   LabelTableCell() {
     addCssClass('TableCell');
     shrinkable = true;
     breakWords = true;
-    shrinkable = true;
   }
 
   @override
@@ -28,6 +20,72 @@ class LabelTableCell extends Label implements AbstractTableCell<String> {
 
   @override
   String get value => caption;
+}
+
+class BooleanTableCell extends Label implements AbstractTableCell<bool> {
+  BooleanTableCell() {
+    addCssClass('TableCell');
+    shrinkable = true;
+    breakWords = true;
+  }
+
+  @override
+  set value(bool value) {
+    caption = value.toString();
+  }
+
+  @override
+  bool get value => caption == 'true';
+}
+
+class NumTableCell extends Label implements AbstractTableCell<num?> {
+  int precision = 0;
+  num? _value;
+
+  NumTableCell() {
+    addCssClass('TableCell');
+    shrinkable = true;
+    breakWords = true;
+    shrinkable = true;
+  }
+
+  @override
+  set value(num? value) {
+    _value = value;
+    caption = value?.toStringAsFixed(precision) ?? '-';
+  }
+
+  @override
+  num? get value => _value;
+}
+
+class DateTimeTableCell extends Label implements AbstractTableCell<DateTime?> {
+  bool showTime = false;
+  DateTime? _value;
+
+  DateTimeTableCell() {
+    addCssClass('TableCell');
+    shrinkable = true;
+    breakWords = true;
+    shrinkable = true;
+  }
+
+  @override
+  set value(DateTime? value) {
+    _value = value;
+    if (value == null) {
+      caption = '-';
+    } else {
+      if (showTime) {
+        caption = utils_date_time.formatDateTimeHum(value);
+      } else {
+        caption = utils_date_time.formatDateHum(value);
+      }
+    }
+  }
+
+  @override
+  DateTime? get value => _value;
 }
 
 class LinkTableCell extends Link implements AbstractTableCell<TableLink> {
@@ -65,8 +123,8 @@ class MultilineTableCell extends PanelComponent implements AbstractTableCell<Lis
   List<dynamic> get value => children.map((e) => (e as Label).caption).toList();
 }
 
-class MultiComponentTableCell extends PanelComponent implements AbstractTableCell<List<dynamic>> {
-  List<dynamic> _value = [];
+class MultiComponentTableCell extends PanelComponent implements AbstractTableCell<List<Component>> {
+  List<Component> _value = [];
 
   MultiComponentTableCell() : super('MultiComponentTableCell') {
     addCssClass('TableCell');
@@ -75,14 +133,14 @@ class MultiComponentTableCell extends PanelComponent implements AbstractTableCel
   }
 
   @override
-  set value(List<dynamic> value) {
+  set value(List<Component> value) {
     clear();
     _value = value;
-    addAll(value.map((e) => e as Component).toList());
+    addAll(value);
   }
 
   @override
-  List<dynamic> get value => _value;
+  List<Component> get value => _value;
 }
 
 class ComponentTableCell extends PanelComponent implements AbstractTableCell<Component> {
