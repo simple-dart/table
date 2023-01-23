@@ -4,6 +4,10 @@ import '../simple_dart_table.dart';
 
 class Table extends PanelComponent {
   late AbstractTableRow headersRow;
+
+  int? sortedColumnIndex;
+  bool sortedColumnAscending = true;
+
   List<AbstractTableRow> rows = <AbstractTableRow>[];
   List<TableColumnDescr> columns = <TableColumnDescr>[];
 
@@ -62,21 +66,24 @@ class Table extends PanelComponent {
     rows.clear();
   }
 
-  void sortData({int columnIndex = 0, bool desc = false}) {
+  void sortData() {
+    if (sortedColumnIndex == null || sortedColumnIndex! >= columns.length) {
+      return;
+    }
     final rowData = <List<dynamic>>[];
     for (final row in rows) {
       rowData.add(row.rowData);
     }
-    if (desc) {
+    if (sortedColumnAscending) {
       rowData.sort((a, b) {
-        final data1 = a[columnIndex];
-        final data2 = b[columnIndex];
+        final data1 = a[sortedColumnIndex!] ?? '';
+        final data2 = b[sortedColumnIndex!] ?? '';
         return compareDynamics(data2, data1);
       });
     } else {
       rowData.sort((a, b) {
-        final data1 = a[columnIndex];
-        final data2 = b[columnIndex];
+        final data1 = a[sortedColumnIndex!] ?? '';
+        final data2 = b[sortedColumnIndex!] ?? '';
         return compareDynamics(data1, data2);
       });
     }
@@ -86,12 +93,13 @@ class Table extends PanelComponent {
   }
 
   void onSortClick(AbstractTableCell headerCell, int columnIndex) {
-    var desc = false;
+    sortedColumnAscending = false;
+    sortedColumnIndex = columnIndex;
     if (headerCell.hasCssClass('Sorted')) {
       headerCell
         ..removeCssClass('Sorted')
         ..addCssClass('SortedDesc');
-      desc = true;
+      sortedColumnAscending = true;
     } else if (headerCell.hasCssClass('SortedDesc')) {
       headerCell.removeCssClass('SortedDesc');
     } else {
@@ -106,7 +114,7 @@ class Table extends PanelComponent {
           ..removeCssClass('SortedDesc');
       }
     }
-    sortData(columnIndex: columnIndex, desc: desc);
+    sortData();
   }
 }
 

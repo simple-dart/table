@@ -1,3 +1,7 @@
+## 0.1.1
+
+- Add sortedColumnIndex and sortedColumnAscending properties
+
 ## 0.1.0
 
 - Upgrade structure for redefine row classes

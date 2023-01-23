@@ -60,7 +60,6 @@ class NumTableCell extends Label implements AbstractTableCell<num?> {
 }
 
 class DateTimeTableCell extends Label implements AbstractTableCell<DateTime?> {
-  bool showTime = false;
   DateTime? _value;
 
   DateTimeTableCell() {
@@ -76,11 +75,7 @@ class DateTimeTableCell extends Label implements AbstractTableCell<DateTime?> {
     if (value == null) {
       caption = '-';
     } else {
-      if (showTime) {
-        caption = utils_date_time.formatDateTimeHum(value);
-      } else {
-        caption = utils_date_time.formatDateHum(value);
-      }
+      caption = utils_date_time.formatDateTimeHumIfExist(value);
     }
   }
 

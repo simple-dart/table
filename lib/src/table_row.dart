@@ -42,12 +42,12 @@ class TableRow extends AbstractTableRow {
       if (isCompatibleCell) {
         existCell.value = value;
       } else {
-        final cell = cellFactory.createCellByType(columnDescr, value)
+        final newCell = cellFactory.createCellByType(columnDescr, value)
           ..value = value
           ..width = '${columnDescr.width}px';
         cells[colNum].remove();
-        insert(colNum, cell);
-        cells[colNum] = cell;
+        insert(colNum, newCell);
+        cells[colNum] = newCell;
       }
     }
   }
