@@ -22,6 +22,21 @@ class LabelTableCell extends Label implements AbstractTableCell<String> {
   String get value => caption;
 }
 
+class NullTableCell extends Label implements AbstractTableCell<String> {
+  NullTableCell() {
+    addCssClass('TableCell');
+    shrinkable = true;
+    breakWords = true;
+    caption = '';
+  }
+
+  @override
+  set value(String? value) {}
+
+  @override
+  String get value => caption;
+}
+
 class BooleanTableCell extends Label implements AbstractTableCell<bool> {
   BooleanTableCell() {
     addCssClass('TableCell');

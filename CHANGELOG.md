@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Add NullTableCell
+
 ## 0.1.1
 
 - Add sortedColumnIndex and sortedColumnAscending properties

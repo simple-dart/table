@@ -5,7 +5,10 @@ import '../simple_dart_table.dart';
 class CellRendererDefault extends CellRenderer {
   @override
   bool checkCellByType(AbstractTableCell cell, dynamic value) {
-    if ((value == null || value is String) && cell is LabelTableCell) {
+    if ((value == null) && cell is NullTableCell) {
+      return true;
+    }
+    if ((value is String) && cell is LabelTableCell) {
       return true;
     }
     if (value is TableColumnDescr && cell is ColumnHeaderCell) {
@@ -40,7 +43,10 @@ class CellRendererDefault extends CellRenderer {
 
   @override
   AbstractTableCell createCellByType(TableColumnDescr columnDescr, dynamic value) {
-    if (value == null || value is String) {
+    if (value == null) {
+      return NullTableCell();
+    }
+    if (value is String) {
       return LabelTableCell();
     }
     if (value is TableColumnDescr) {
